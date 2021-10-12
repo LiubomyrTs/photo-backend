@@ -19,6 +19,15 @@ const UserSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  role: {
+    type: String,
+    required: true,
+  },
+}, {
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
+  },
 });
 
 const User = mongoose.model('User', UserSchema);
@@ -49,4 +58,9 @@ module.exports.comparePassword = (candidatePassword, hash, callback) => {
     if (err) throw err;
     callback(null, isMatch);
   });
+};
+
+module.exports.getAll = (callback) => {
+  const query = { role: 'CUSTOMER' };
+  User.find(query, callback);
 };

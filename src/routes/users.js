@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const passport = require('passport');
@@ -5,21 +6,34 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 
+const USER_ROLES = {
+  CUSTOMER: 'CUSTOMER',
+  ADMIN: 'ADMIN',
+};
+
 const router = express.Router();
 // Register
 router.post('/register', (req, res) => {
-  const newUser = new User({
-    name: req.body.name,
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password,
-  });
+  User.getUserByUsername(req.body.username, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      const newUser = new User({
+        name: req.body.name,
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password,
+        role: USER_ROLES.CUSTOMER,
+      });
 
-  User.addUser(newUser, (err) => {
-    if (err) {
-      res.json({ success: false, msg: 'Failed to register user' });
+      User.addUser(newUser, (e) => {
+        if (e) {
+          res.json({ success: false, msg: 'Failed to register user' });
+        } else {
+          res.json({ success: true, msg: 'User registered' });
+        }
+      });
     } else {
-      res.json({ success: true, msg: 'User registered' });
+      res.status(400).json({ sucess: false, msg: 'User already exists' });
     }
   });
 });
@@ -50,6 +64,7 @@ router.post('/authenticate', (req, res) => {
             name: user.name,
             username: user.username,
             email: user.email,
+            role: user.role,
           },
         });
       } else {
@@ -59,10 +74,19 @@ router.post('/authenticate', (req, res) => {
   });
 });
 
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.getAll((err, users) => {
+    if (err) throw err;
+    users.forEach((user) => {
+      user.password = undefined;
+    });
+    res.json(users);
+  });
+});
+
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { user } = req;
   user.password = undefined;
-  console.log(user);
   res.json({ user });
 });
 
