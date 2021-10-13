@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
-const upload = require('multer');
 
 const config = require('./config/database');
 
@@ -33,7 +32,7 @@ const port = process.env.PORT || 8080;
 app.use(cors());
 
 // Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Body parser Middleware
 app.use(bodyParser.json());
@@ -47,10 +46,10 @@ require('./config/passport')(passport);
 app.use('/users', users);
 app.use('/blogs', blogs);
 
-// Index route
-app.get('/', (req, res) => {
-  res.send('INVALID ENDPOINT');
-});
+// // Index route
+// app.get('/', (req, res) => {
+//   res.send('INVALID ENDPOINT');
+// });
 
 app.get('/uploads/*', (req, res) => {
   res.sendFile(path.join(__dirname, `../${req.url}`));
