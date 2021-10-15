@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 const express = require('express');
 const multer = require('multer');
 const passport = require('passport');
@@ -33,10 +34,26 @@ router.post('/', passport.authenticate('jwt', { session: false }), upload.single
   });
 });
 
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/', (req, res) => {
   Blog.getAll((err, blogs) => {
     if (err) throw err;
     res.json(blogs);
+  });
+});
+
+router.delete('/:id', (req, res) => {
+  const id = req.params.id;
+  Blog.deleteBlog(id, (err) => {
+    if (err) throw err;
+    res.json({ sucess: true, msg: 'Блог видалено' });
+  });
+});
+
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  Blog.getById(id, (err, blog) => {
+    if (err) throw err;
+    res.json(blog);
   });
 });
 

@@ -36,3 +36,11 @@ module.exports.getAll = (callback) => {
 module.exports.addBlog = (newBlog, callback) => {
   newBlog.save(callback);
 };
+
+module.exports.getById = (id, callback) => {
+  Blog.findById(id, callback);
+};
+
+module.exports.deleteBlog = (id, callback) => {
+  Blog.findOneAndDelete(id, callback);
+};
