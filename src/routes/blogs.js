@@ -2,6 +2,8 @@
 const express = require('express');
 const multer = require('multer');
 const passport = require('passport');
+const gm = require('gm');
+const path = require('path');
 
 const Blog = require('../models/blog');
 
@@ -18,6 +20,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/', passport.authenticate('jwt', { session: false }), upload.single('cover'), (req, res) => {
+  gm(path.join(__dirname, '../../', req.file.path))
+    .resize(240, 240, '!')
+    .noProfile()
+    .write(path.join(__dirname, '../../', req.file.path), (err) => {
+      if (err) { console.log(err); }
+      if (!err) { console.log('done'); }
+    });
+
+  console.log('----------');
   const newBlog = new Blog({
     title: req.body.title,
     subtitle: req.body.subtitle,

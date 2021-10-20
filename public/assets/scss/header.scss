@@ -51,6 +51,10 @@
       animation-duration: 0.3s;
     }
   }
+
+  & > .link-default {
+    cursor: default;
+  }
 }
 
 .nav-sub-list {
