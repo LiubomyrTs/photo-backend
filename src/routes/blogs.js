@@ -24,7 +24,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), upload.single
     .resize(240, 240, '!')
     .noProfile()
     .write(path.join(__dirname, '../../', req.file.path), (err) => {
-      if (err) { console.log(err); }
+      if (err) { console.log(err);  res.send(500); }
       if (!err) { console.log('done'); }
     });
 
