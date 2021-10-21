@@ -21,14 +21,14 @@ const upload = multer({ storage });
 
 router.post('/', passport.authenticate('jwt', { session: false }), upload.single('cover'), (req, res) => {
   gm(path.join(__dirname, '../../', req.file.path))
-    .resize(240, 240, '!')
+    .resize('666', '500', '^')
+    .gravity('Center')
+    .crop('666', '500')
     .noProfile()
     .write(path.join(__dirname, '../../', req.file.path), (err) => {
-      if (err) { console.log(err);  res.send(500); }
-      if (!err) { console.log('done'); }
+      if (err) { res.send(500); }
     });
 
-  console.log('----------');
   const newBlog = new Blog({
     title: req.body.title,
     subtitle: req.body.subtitle,

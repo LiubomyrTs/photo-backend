@@ -25,6 +25,7 @@ const app = express();
 
 const users = require('./routes/users');
 const blogs = require('./routes/blogs');
+const home = require('./routes/home');
 
 const port = process.env.PORT || 8080;
 
@@ -45,6 +46,7 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 app.use('/blogs', blogs);
+app.use('/home-info', home);
 
 // // Index route
 // app.get('/', (req, res) => {
