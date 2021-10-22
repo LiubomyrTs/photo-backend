@@ -25,7 +25,6 @@ const HomeInfo = mongoose.model('HomeInfo', HomeInfoSchema);
 module.exports = HomeInfo;
 
 module.exports.update = (homeInfo, callback) => {
-  console.log(homeInfo);
   HomeInfo.findOneAndUpdate(
     {},
     {

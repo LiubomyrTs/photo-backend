@@ -18,6 +18,39 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+const fileHandler = (req, res, fieldName, ratio) => {
+  req.files[fieldName].forEach(async (f) => {
+    let cropValues;
+    const p = new Promise((resolve, reject) => {
+      gm(path.join(__dirname, '../../', f.path))
+        .identify((err, value) => {
+          let min;
+          if (value.size.height > value.size.width) {
+            min = value.size.width;
+            cropValues = [min / ratio, min];
+          } else {
+            min = value.size.height;
+            cropValues = [min * ratio, min];
+          }
+          console.log(cropValues);
+          resolve();
+          if (err) { reject(); }
+        });
+    });
+
+    p.then(() => {
+      gm(path.join(__dirname, '../../', f.path))
+        .gravity('Center')
+        .crop(...cropValues)
+        .noProfile()
+        .write(path.join(__dirname, '../../', f.path), (err) => {
+          if (err) { res.send(500).json({ success: false, msg: 'GM Error' }); }
+          if (!err) { console.log('done'); }
+        });
+    });
+  });
+};
+
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
@@ -32,24 +65,14 @@ router.post(
     },
   ]),
   (req, res) => {
-    // console.log('cardPhotos');
-    // req.files['carouselPhotos[]'].forEach((f) => {
-    //   console.log('22222');
-    //   gm(path.join(__dirname, '../../', f.path))
-    //     .resize('768', '1024', '^')
-    //     .gravity('Center')
-    //     .crop('768', '1024')
-    //     .noProfile()
-    //     .write(path.join(__dirname, '../../', f.path), (err) => {
-    //       if (err) { console.log(err); res.send(500).json({ success: false, msg: 'GM Error' }); }
-    //       if (!err) { console.log('done'); }
-    //     });
-    // });
+    console.log('------');
+
+    fileHandler(req, res, 'carouselPhotos[]', 1.5);
+    fileHandler(req, res, 'cardPhotos[]', 1.5);
+    console.log('------');
 
     const carouselPhotos = req.files['carouselPhotos[]'].map((f) => f.path);
     const cardPhotos = req.files['cardPhotos[]'].map((f) => f.path);
-
-    console.log(cardPhotos);
 
     const homeInfo = new HomeInfo({
       title: req.body.title,
@@ -61,7 +84,6 @@ router.post(
 
     HomeInfo.update(homeInfo, (e) => {
       if (e) {
-        console.log(e);
         res.send(500, { success: false, msg: 'Failed to add homeinfo' });
       } else {
         res.json({ success: true, msg: 'Home info successfuly updated' });
@@ -74,7 +96,6 @@ router.get('/', (req, res) => {
   // if (error) throw error;
   HomeInfo.get((err, homeInfo) => {
     if (err) throw err;
-    console.log(homeInfo);
     res.json(homeInfo);
   });
 });
