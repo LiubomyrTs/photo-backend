@@ -7,6 +7,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 
 const config = require('./config/database');
+const { getFileStream } = require('./s3');
 
 // Connect to database
 mongoose.connect(config.database);
@@ -26,6 +27,7 @@ const app = express();
 const users = require('./routes/users');
 const blogs = require('./routes/blogs');
 const home = require('./routes/home');
+const photosessions = require('./routes/photosessions');
 
 const port = process.env.PORT || 8080;
 
@@ -47,11 +49,19 @@ require('./config/passport')(passport);
 app.use('/users', users);
 app.use('/blogs', blogs);
 app.use('/home-info', home);
+app.use('/photosessions', photosessions);
 
 // // Index route
 // app.get('/', (req, res) => {
 //   res.send('INVALID ENDPOINT');
 // });
+
+app.get('/images/*', (req, res) => {
+  const key = req.url.replace('/images/', '');
+  const readStream = getFileStream(key);
+
+  readStream.pipe(res);
+});
 
 app.get('/uploads/*', (req, res) => {
   res.sendFile(path.join(__dirname, `../${req.url}`));

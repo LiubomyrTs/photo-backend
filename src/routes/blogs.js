@@ -2,10 +2,14 @@
 const express = require('express');
 const multer = require('multer');
 const passport = require('passport');
-const gm = require('gm');
-const path = require('path');
+const fs = require('fs');
+const util = require('util');
 
+const { uploadFile } = require('../s3');
 const Blog = require('../models/blog');
+const cutImage = require('../utils/cutImage');
+
+const unlinkFile = util.promisify(fs.unlink);
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -19,20 +23,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-router.post('/', passport.authenticate('jwt', { session: false }), upload.single('cover'), (req, res) => {
-  gm(path.join(__dirname, '../../', req.file.path))
-    .resize('666', '500', '^')
-    .gravity('Center')
-    .crop('666', '500')
-    .noProfile()
-    .write(path.join(__dirname, '../../', req.file.path), (err) => {
-      if (err) { res.send(500); }
-    });
+router.post('/', passport.authenticate('jwt', { session: false }), upload.single('cover'), async (req, res) => {
+  await cutImage(req, res, 1.5);
+
+  const result = await uploadFile(req.file);
+  await unlinkFile(req.file.path);
 
   const newBlog = new Blog({
     title: req.body.title,
     subtitle: req.body.subtitle,
-    cover: req.file.path,
+    cover: `images/${result.key}`,
     content: req.body.content,
   });
 
@@ -61,6 +61,13 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  // const listResponse = getFilesFromList(getFilesFromList);
+  // console.log('------');
+  // console.log('------');
+  // console.log(listResponse);
+  console.log('------');
+  console.log('------');
+
   const id = req.params.id;
   Blog.getById(id, (err, blog) => {
     if (err) throw err;
