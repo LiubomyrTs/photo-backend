@@ -22,6 +22,7 @@ const HomeInfoSchema = mongoose.Schema({
 });
 
 const HomeInfo = mongoose.model('HomeInfo', HomeInfoSchema);
+
 module.exports = HomeInfo;
 
 module.exports.update = (homeInfo, callback) => {

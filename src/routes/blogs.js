@@ -61,14 +61,8 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // const listResponse = getFilesFromList(getFilesFromList);
-  // console.log('------');
-  // console.log('------');
-  // console.log(listResponse);
-  console.log('------');
-  console.log('------');
-
   const id = req.params.id;
+  console.log(id);
   Blog.getById(id, (err, blog) => {
     if (err) throw err;
     res.json(blog);

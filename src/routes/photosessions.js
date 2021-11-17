@@ -6,6 +6,7 @@ const util = require('util');
 const { uploadFile } = require('../s3');
 const Photosession = require('../models/photosession');
 const transliterate = require('../utils/transliterate');
+const cutImage = require('../utils/cutImage');
 
 const unlinkFile = util.promisify(fs.unlink);
 
@@ -47,6 +48,7 @@ router.post(
       photos = v;
     });
 
+    await cutImage(req, res, 1.75, 'cover');
     const coverUploadResult = await uploadFile(req.files.cover[0]);
     await unlinkFile(req.files.cover[0].path);
 
@@ -70,9 +72,6 @@ router.post(
 
 router.get('/', (req, res) => {
   const { userId } = req.query;
-  // console.log('------');
-  // getFilesFromList();
-  // console.log('------');
 
   Photosession.getUsersPhotosessions(userId, (e, photosessions) => {
     if (e) {
@@ -85,9 +84,6 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const photosessionId = req.params.id;
-  // console.log('------');
-  // getFilesFromList();
-  // console.log('------');
 
   Photosession.getById(photosessionId, (e, photosessions) => {
     if (e) {

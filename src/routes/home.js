@@ -61,8 +61,6 @@ router.post(
       cardPhotos = v;
     });
 
-    console.log(carouselPhotos);
-
     const homeInfo = new HomeInfo({
       title: req.body.title,
       cardTitle: req.body.cardTitle,
@@ -82,7 +80,7 @@ router.post(
 );
 
 router.get('/', (req, res) => {
-  // if (error) throw error;
+  // eslint-disable-next-line no-debugger
   HomeInfo.get((err, homeInfo) => {
     if (err) throw err;
     res.json(homeInfo);
