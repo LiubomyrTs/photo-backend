@@ -62,6 +62,7 @@ router.post(
 
     Photosession.save(photosession, (e) => {
       if (e) {
+        console.error(e);
         res.status(500).send({ success: false, msg: 'Failed to add photosession' });
       } else {
         res.json({ success: true, msg: 'Photosession was successfuly added' });
@@ -91,6 +92,14 @@ router.get('/:id', (req, res) => {
     } else {
       res.json(photosessions);
     }
+  });
+});
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  Photosession.delete(id, (err) => {
+    if (err) throw err;
+    res.json({ sucess: true, msg: 'Фотосесію видалено' });
   });
 });
 

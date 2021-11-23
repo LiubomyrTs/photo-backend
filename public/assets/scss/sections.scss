@@ -14,7 +14,10 @@
     // top: 0;
     // left: 0;
     width: 100vw;
-    filter: grayscale(1);
+    filter: grayscale(1) saturate(.5);
+    @media (min-aspect-ratio: 8/5) and (max-aspect-ratio: 12/6) {
+      height: calc(100vh - 7rem);
+    }
   }
   h1 {
     position: absolute;

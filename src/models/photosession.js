@@ -37,3 +37,7 @@ module.exports.getUsersPhotosessions = (userId, callback) => {
 module.exports.getById = (photosessionId, callback) => {
   Photosession.findById(photosessionId, callback);
 };
+
+module.exports.delete = (id, callback) => {
+  Photosession.findOneAndDelete(id, callback);
+};

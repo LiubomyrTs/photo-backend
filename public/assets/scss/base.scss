@@ -11,11 +11,14 @@
 @import './buttons.scss';
 @import './alerts.scss';
 @import './loader.scss';
+@import './modal.scss';
+@import './photosession.scss';
 
 body {
   margin: 0;
   padding: 0;
   color: #fff;
+  height: 100%;
 }
 
 .application-container {
@@ -70,3 +73,43 @@ ul.no-base-styling {
   }
 }
 
+.shadow-wrapper {
+  transition: all ease-out .4s;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+html { height: 100%; overflow:auto; }
+
+
+.has-tooltip {
+  font-size: 24px;
+  position: relative;
+}
+
+.cart-count {
+  display: flex;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  padding: 3px;
+  font-size: 11px;
+  justify-content: center;
+  align-items: center;
+  right: 2px;
+  background-color: gold;
+}

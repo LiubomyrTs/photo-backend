@@ -18,10 +18,12 @@ function cutImage(req, res, ratio, fieldName = null) {
           let min;
           if (value.size.height > value.size.width) {
             min = value.size.width;
-            cropValues = [min / ratio, min];
+            cropValues = [min, min / ratio];
           } else {
             min = value.size.height;
-            cropValues = [min * ratio, min];
+            const max = value.size.width;
+            console.log([min * ratio, min]);
+            cropValues = [max, max / ratio];
           }
           resolveInner();
           if (err) { rejectInner(); }
@@ -35,7 +37,7 @@ function cutImage(req, res, ratio, fieldName = null) {
         .noProfile()
         .write(path.join(__dirname, '../../', f.path), (err) => {
           if (err) { res.send(500).json({ success: false, msg: 'GM Error' }); reject(); }
-          if (!err) { console.log('done'); resolve(); }
+          if (!err) { resolve(); }
         });
     });
   }));
