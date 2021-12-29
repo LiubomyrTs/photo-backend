@@ -28,6 +28,7 @@ const users = require('./routes/users');
 const blogs = require('./routes/blogs');
 const home = require('./routes/home');
 const photosessions = require('./routes/photosessions');
+const favors = require('./routes/favors');
 
 const port = process.env.PORT || 8080;
 
@@ -50,6 +51,7 @@ app.use('/users', users);
 app.use('/blogs', blogs);
 app.use('/home-info', home);
 app.use('/photosessions', photosessions);
+app.use('/favors', favors);
 
 // // Index route
 // app.get('/', (req, res) => {
