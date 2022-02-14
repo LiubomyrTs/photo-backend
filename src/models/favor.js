@@ -26,6 +26,10 @@ const FavorSchema = mongoose.Schema({
 const Favor = mongoose.model('Favor', FavorSchema);
 module.exports = Favor;
 
+module.exports.getAll = (callback) => {
+  Favor.find({}, callback);
+};
+
 module.exports.getByType = (type, callback) => {
   const query = { type };
   Favor.find(query, callback);

@@ -93,7 +93,6 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 router.get('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { id } = req.params;
   User.getUserById(id, (err, user) => {
-    console.log(user);
     if (err) throw err;
     user.password = undefined;
     res.json(user);

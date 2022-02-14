@@ -38,7 +38,6 @@ router.post(
     },
   ]),
   async (req, res) => {
-    console.log(req.files['carouselPhotos[]']);
     await cutImage(req, res, 2.5, 'carouselPhotos[]');
     await cutImage(req, res, 1.5, 'cardPhotos[]');
 

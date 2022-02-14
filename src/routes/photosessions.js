@@ -3,6 +3,7 @@ const multer = require('multer');
 
 const fs = require('fs');
 const util = require('util');
+const compressImage = require('../utils/compressImage');
 const { uploadFile } = require('../s3');
 const Photosession = require('../models/photosession');
 const transliterate = require('../utils/transliterate');
@@ -39,8 +40,9 @@ router.post(
     const { username, title } = req.body;
     const folderTitle = transliterate(title.trim().replace(/\s/g, '-'));
     let photos = req.files['photos[]'].map(async (f) => {
-      const result = await uploadFile(f, `photosessions/${username}/${folderTitle}/`);
-      await unlinkFile(f.path);
+      await compressImage(f);
+      const result = await uploadFile(`${f.path}`, `photosessions/${username}/${folderTitle}/`);
+      await unlinkFile(`${f.path}`);
       return `images/${result.key}`;
     });
 
@@ -48,8 +50,9 @@ router.post(
       photos = v;
     });
 
+    await compressImage(req.files.cover[0]);
     await cutImage(req, res, 1.75, 'cover');
-    const coverUploadResult = await uploadFile(req.files.cover[0]);
+    const coverUploadResult = await uploadFile(req.files.cover[0].path);
     await unlinkFile(req.files.cover[0].path);
 
     const photosession = new Photosession({

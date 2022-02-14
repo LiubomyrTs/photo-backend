@@ -7,7 +7,6 @@ function cutImage(req, res, ratio, fieldName = null) {
     files = [req.file];
   } else {
     files = req.files[fieldName];
-    console.log(fieldName);
   }
 
   const promises = files.map((f) => new Promise((resolve, reject) => {
@@ -22,7 +21,6 @@ function cutImage(req, res, ratio, fieldName = null) {
           } else {
             min = value.size.height;
             const max = value.size.width;
-            console.log([min * ratio, min]);
             cropValues = [max, max / ratio];
           }
           resolveInner();

@@ -14,18 +14,28 @@ const s3 = new S3({
 });
 
 function uploadFile(file, delimiter = '') {
-  const fileStream = fs.createReadStream(file.path);
+  //temp
+  let fileStream;
+  let key;
+  if (typeof file === 'string') {
+    fileStream = fs.createReadStream(file);
+    key = `${delimiter}${file.split('/').reverse()[0]}`;
+  } else {
+    fileStream = fs.createReadStream(file.path);
+    key = `${delimiter}${file.filename}`;
+  }
 
   const uploadParams = {
     Bucket: bucketName,
     Body: fileStream,
-    Key: `${delimiter}${file.filename}`,
+    Key: key,
   };
 
   return s3.upload(uploadParams).promise();
 }
 
 function getFileStream(fileKey) {
+  console.log(fileKey);
   const downloadParams = {
     Key: fileKey,
     Bucket: bucketName,

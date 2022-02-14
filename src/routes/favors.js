@@ -24,19 +24,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/', passport.authenticate('jwt', { session: false }), upload.single('cover'), async (req, res) => {
-  // await cutImage(req, res, 3);
-
-  // const result = await uploadFile(req.file);
-  // await unlinkFile(req.file.path);
+  await cutImage(req, res, 3);
+  const result = await uploadFile(req.file);
+  await unlinkFile(req.file.path);
 
   const favor = new Favor({
     description: req.body.description,
     type: req.body.type,
-    // cover: `images/${result.key}`,
+    cover: `images/${result.key}`,
     content: req.body.content,
   });
-
-  console.log(favor);
 
   Favor.update(favor, (e) => {
     if (e) {
@@ -48,9 +45,17 @@ router.post('/', passport.authenticate('jwt', { session: false }), upload.single
 });
 
 router.get('/', (req, res) => {
-  Favor.getByType((err, favor) => {
+  Favor.getAll((err, favors) => {
     if (err) throw err;
-    res.json(favor);
+    res.json(favors);
+  });
+});
+
+router.get('/:type', (req, res) => {
+  const type = req.params.type;
+  Favor.getByType(type, (err, favor) => {
+    if (err) throw err;
+    res.json(favor[0]);
   });
 });
 
