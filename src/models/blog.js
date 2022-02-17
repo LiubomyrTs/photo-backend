@@ -36,6 +36,21 @@ module.exports.addBlog = (newBlog, callback) => {
   newBlog.save(callback);
 };
 
+module.exports.editBlog = (blog, callback) => {
+  Blog.findByIdAndUpdate(
+    blog.id,
+    {
+      $set: {
+        title: blog.title,
+        subtitle: blog.subtitle,
+        cover: blog.cover,
+        content: blog.content,
+      },
+    },
+    callback,
+  );
+};
+
 module.exports.getById = (id, callback) => {
   Blog.findById(id, callback);
 };

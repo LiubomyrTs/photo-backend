@@ -40,7 +40,32 @@ router.post('/', passport.authenticate('jwt', { session: false }), upload.single
     if (e) {
       res.json({ success: false, msg: 'Failed to add blog' });
     } else {
-      res.json({ success: true, msg: 'User added' });
+      res.json({ success: true, msg: 'Blog added' });
+    }
+  });
+});
+
+router.put('/:id', passport.authenticate('jwt', { session: false }), upload.single('cover'), async (req, res) => {
+  const blog = {
+    id: req.params.id,
+    title: req.body.title,
+    subtitle: req.body.subtitle,
+    content: req.body.content,
+  };
+
+  if (req.file) {
+    await cutImage(req, res, 1.5);
+
+    const result = await uploadFile(req.file);
+    await unlinkFile(req.file.path);
+    blog.cover = `images/${result.key}`;
+  }
+
+  Blog.editBlog(blog, (e) => {
+    if (e) {
+      res.json({ success: false, msg: 'Failed to edit blog' });
+    } else {
+      res.json({ success: true, msg: 'Blog edited' });
     }
   });
 });

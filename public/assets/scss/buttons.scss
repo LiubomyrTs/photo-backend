@@ -14,3 +14,11 @@
   border: 1px solid black;
   background: none;
 }
+
+.table-actions {
+  display: flex;
+  flex-direction: column;
+  & > a, button {
+    margin-bottom: 10px;
+  }
+}

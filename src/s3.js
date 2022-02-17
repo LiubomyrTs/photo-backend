@@ -35,7 +35,6 @@ function uploadFile(file, delimiter = '') {
 }
 
 function getFileStream(fileKey) {
-  console.log(fileKey);
   const downloadParams = {
     Key: fileKey,
     Bucket: bucketName,
