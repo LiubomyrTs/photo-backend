@@ -32,7 +32,7 @@
     "watch": "NODE_ENV=dev nodemon src/app.js"
   },
   "engines": {
-    "node": "16.x"
+    "node": "14.x"
   },
   "author": "Liubomyr Tsimbolynets",
   "license": "ISC"
