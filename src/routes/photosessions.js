@@ -59,7 +59,7 @@ router.post(
       photos = v;
     });
 
-    await compressImage(req.files.cover[0]);
+    // await compressImage(req.files.cover[0]);
     await cutImage(req, res, 1.75, 'cover');
     const coverUploadResult = await uploadFile(req.files.cover[0].path);
     await unlinkFile(req.files.cover[0].path);
