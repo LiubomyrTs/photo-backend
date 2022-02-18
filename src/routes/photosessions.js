@@ -74,7 +74,6 @@ router.post(
 
     Photosession.save(photosession, (e) => {
       if (e) {
-        console.error(e);
         res.status(500).send({ success: false, msg: 'Failed to add photosession' });
       } else {
         res.json({ success: true, msg: 'Photosession was successfuly added' });
