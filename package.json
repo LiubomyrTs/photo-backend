@@ -31,6 +31,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "NODE_ENV=dev nodemon src/app.js"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "author": "Liubomyr Tsimbolynets",
   "license": "ISC"
 }
