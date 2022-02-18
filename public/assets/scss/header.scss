@@ -5,6 +5,15 @@
   background-color: #000;
   position: relative;
   z-index: 1000;
+  @include for-tablet-portrait-up {
+    height: 6rem;
+  }
+
+  .dashboard-links {
+    @include for-tablet-portrait-up {
+      display: none;
+    }
+  }
 }
 
 .logo {
@@ -18,6 +27,10 @@
   justify-content: center;
   margin-bottom: 0;
   height: 100%;
+
+  @include for-tablet-portrait-up {
+    display: none;
+  }
 }
 
 .navigation-link {
@@ -31,20 +44,23 @@
   }
 }
 
-.nav-dropdown-menu {
-  position: relative;
-  &:hover {
-    .nav-sub-list {
-      display: block;
-      animation-name: fadeId;
-      animation-duration: 0.3s;
+header {
+  .nav-dropdown-menu {
+    position: relative;
+    &:hover {
+      .nav-sub-list {
+        display: block;
+        animation-name: fadeId;
+        animation-duration: 0.3s;
+      }
+    }
+  
+    & > .link-default {
+      cursor: default;
     }
   }
-
-  & > .link-default {
-    cursor: default;
-  }
 }
+
 
 .nav-sub-list {
   display: none;
@@ -77,5 +93,77 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+.app-mobile-menu {
+  display: none;
+  @include for-tablet-portrait-up {
+    &.is-opened {
+      display: block; 
+    }
+  }
+}
+
+.backdrop {
+  @include for-tablet-portrait-up {
+    z-index: 1001;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.2);
+    left: 0;
+    top: 0;
+    width: 60vw;
+    height: 100vh;
+  }
+}
+
+.mobile-only {
+  @include for-tablet-portrait-up {
+    display: block;
+    z-index: 1001;
+    position: fixed;
+    background-color: black;
+    right: 0;
+    top: 0;
+    width: 40vw;
+    height: 100vh;
+  }
+
+  .navigation-list {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .navigation-link {
+    height: auto;
+  }
+
+  .nav-dropdown-menu {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-sub-list {
+    display: block;
+    position: static;
+    text-align: left;
+    background: black;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0 1.5rem;
+    transition: all 0.6s;
+    width: auto;
+
+    li {
+      padding: 0;
+      border-bottom: none;
+    }
+  }
+
+  .dashboard-links {
+    @include for-tablet-portrait-up {
+      display: block;
+    }
   }
 }

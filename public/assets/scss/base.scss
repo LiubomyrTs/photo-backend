@@ -1,3 +1,4 @@
+@import './breakpoints.scss';
 @import './typography.scss';
 @import './variables.scss';
 @import './header.scss';
@@ -14,6 +15,7 @@
 @import './modal.scss';
 @import './photosession.scss';
 @import './favor.scss'; 
+@import './burger.scss';
 
 body {
   margin: 0;
@@ -35,6 +37,10 @@ body {
 .content {
   min-height: calc(100vh - 14rem);
   color: #000;
+  
+  @include for-tablet-portrait-up {
+    min-height: calc(100vh - 12rem);
+  }
 }
 
 .width-container {

@@ -1,5 +1,6 @@
 .app-card {
   text-align: center;
+  margin-bottom: 30px;
 
   &:hover .shadow-wrapper {
     cursor: pointer;
@@ -10,6 +11,7 @@
   }
 
   .app-card-content {
+    padding-bottom: 3px;
     position: relative;
     z-index: 1;
   }

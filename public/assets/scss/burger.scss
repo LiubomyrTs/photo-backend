@@ -1,0 +1,33 @@
+.hamburger {
+  cursor: pointer;
+  display: none;
+  @include for-tablet-portrait-up {
+    display: block;
+  }
+  @include for-small-phone-only {
+    margin-left: 9px;
+  }
+}
+
+.hamburger .line {
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  display: block;
+  margin: 8px 0;
+  border-radius: 2px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  @include for-tablet-landscape-up {
+    width: 20px;
+    margin: 4px 0;
+  }
+
+  &:nth-child(2) {
+    width: 20px;
+    @include for-tablet-landscape-up {
+      width: 15px;
+    }
+  }
+}
