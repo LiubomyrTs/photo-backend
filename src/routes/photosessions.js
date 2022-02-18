@@ -40,10 +40,19 @@ router.post(
     const { username, title } = req.body;
     const folderTitle = transliterate(title.trim().replace(/\s/g, '-'));
     let photos = req.files['photos[]'].map(async (f) => {
-      await compressImage(f);
-      const result = await uploadFile(`${f.path}`, `photosessions/${username}/${folderTitle}/`);
-      await unlinkFile(`${f.path}`);
-      return `images/${result.key}`;
+      try {
+        await compressImage(f);
+      } catch (e) {
+        res.status(500).json('failed compressing photo');
+      }
+
+      try {
+        const result = await uploadFile(`${f.path}`, `photosessions/${username}/${folderTitle}/`);
+        await unlinkFile(`${f.path}`);
+        return `images/${result.key}`;
+      } catch (e) {
+        res.status(500).json('failed uploading photo');
+      }
     });
 
     await Promise.all(photos).then((v) => {
