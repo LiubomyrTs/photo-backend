@@ -28,8 +28,16 @@ const Blog = mongoose.model('Blog', BlogSchema);
 module.exports = Blog;
 
 module.exports.getAll = (callback) => {
-  const query = {};
-  Blog.find(query, callback);
+  Blog.find(
+    {},
+    null,
+    { sort: { created_at: -1 } },
+    callback,
+  );
+};
+
+module.exports.getLastThree = (callback) => {
+  Blog.find().sort({ created_at: -1 }).limit(3).exec(callback);
 };
 
 module.exports.addBlog = (newBlog, callback) => {

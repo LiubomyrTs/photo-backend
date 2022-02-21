@@ -101,7 +101,7 @@ router.get('/:id', (req, res) => {
     if (e) {
       res.status(500).send({ success: false, msg: 'Failed to get users photosessions' });
     } else {
-      res.json(photosessions);
+      res.set('Cache-Control', 'no-store').json(photosessions);
     }
   });
 });

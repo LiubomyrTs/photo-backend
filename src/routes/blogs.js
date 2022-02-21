@@ -71,7 +71,14 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), upload.sing
 });
 
 router.get('/', (req, res) => {
-  Blog.getAll((err, blogs) => {
+  let getMethod;
+  if (req.query.mainPage) {
+    getMethod = Blog.getLastThree;
+  } else {
+    getMethod = Blog.getAll;
+  }
+
+  getMethod((err, blogs) => {
     if (err) throw err;
     res.json(blogs);
   });
