@@ -1,4 +1,4 @@
-# ngrx-bucket
+# photo-backend
 Personal Express project for saving photosessions
 
 Run `npm i` to install dependencies
